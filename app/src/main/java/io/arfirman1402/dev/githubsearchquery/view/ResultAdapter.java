@@ -1,4 +1,4 @@
-package io.arfirman1402.dev.githubsearchquery;
+package io.arfirman1402.dev.githubsearchquery.view;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
+import io.arfirman1402.dev.githubsearchquery.R;
 
 /**
  * Created by alodokter-it on 30/08/17 -- ResultAdapter.

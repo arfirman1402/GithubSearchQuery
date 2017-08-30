@@ -1,4 +1,4 @@
-package io.arfirman1402.dev.githubsearchquery;
+package io.arfirman1402.dev.githubsearchquery.view;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.arfirman1402.dev.githubsearchquery.R;
 
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.main_search_result)

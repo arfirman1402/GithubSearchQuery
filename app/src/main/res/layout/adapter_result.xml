@@ -4,7 +4,6 @@
     android:id="@+id/user_holder"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/user_holder_margin"
     app:cardUseCompatPadding="true"
     app:contentPadding="@dimen/user_holder_content_padding">
 
