@@ -6,4 +6,5 @@ package io.arfirman1402.dev.githubsearchquery.util;
 
 public class IConstant {
     public static final String BASE_URL = "https://api.github.com/";
+    public static final int QUERY_PER_PAGE = 20;
 }

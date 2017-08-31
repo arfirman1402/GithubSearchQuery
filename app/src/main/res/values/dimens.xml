@@ -7,4 +7,5 @@
     <dimen name="user_image_height">64dp</dimen>
     <dimen name="user_name_margin_start">8dp</dimen>
     <dimen name="user_name_text_size">18sp</dimen>
+    <dimen name="main_search_user_padding">8dp</dimen>
 </resources>

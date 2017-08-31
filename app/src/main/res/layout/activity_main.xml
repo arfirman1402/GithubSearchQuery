@@ -7,8 +7,8 @@
     tools:context="io.arfirman1402.dev.githubsearchquery.view.MainActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/main_search_result"
+        android:id="@+id/main_search_user"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp" />
+        android:padding="@dimen/main_search_user_padding" />
 </LinearLayout>
