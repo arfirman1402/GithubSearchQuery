@@ -4,10 +4,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.arfirman1402.dev.githubsearchquery.R;
 import io.arfirman1402.dev.githubsearchquery.model.User;
@@ -31,7 +36,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ResultViewHold
 
     @Override
     public void onBindViewHolder(ResultViewHolder holder, int position) {
-
+        holder.userName.setText(users.get(holder.getAdapterPosition()).getLogin());
+        Glide.with(holder.itemView.getContext())
+                .load(users.get(holder.getAdapterPosition()).getAvatarUrl())
+                .centerCrop()
+                .dontAnimate()
+                .placeholder(R.mipmap.ic_github_icon)
+                .into(holder.userImage);
     }
 
     public void setUsers(List<User> users) {
@@ -50,6 +61,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ResultViewHold
     }
 
     class ResultViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.user_image)
+        ImageView userImage;
+
+        @BindView(R.id.user_name)
+        TextView userName;
 
         public ResultViewHolder(View itemView) {
             super(itemView);
