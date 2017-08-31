@@ -46,7 +46,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ResultViewHold
     }
 
     public void setUsers(List<User> users) {
-        this.users.clear();
         this.users.addAll(users);
         notifyDataSetChanged();
     }

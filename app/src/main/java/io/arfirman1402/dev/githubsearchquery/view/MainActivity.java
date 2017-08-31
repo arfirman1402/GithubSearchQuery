@@ -20,6 +20,7 @@ import io.arfirman1402.dev.githubsearchquery.R;
 import io.arfirman1402.dev.githubsearchquery.controller.UserController;
 import io.arfirman1402.dev.githubsearchquery.event.UserEvent;
 import io.arfirman1402.dev.githubsearchquery.model.User;
+import io.arfirman1402.dev.githubsearchquery.util.IConstant;
 
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.main_search_user)
@@ -27,13 +28,13 @@ public class MainActivity extends AppCompatActivity {
     private EventBus eventBus;
     private UserAdapter userAdapter;
     private UserController userController;
-    private String userQuery;
+    private String userQuery = "firman";
     private int pageNumber = 1;
 
     private static final String TAG = "MainActivity";
     private int totalCount;
-    private String usersJsonKey = getString(R.string.users_json);
-    private String usersStateKey = getString(R.string.users_state);
+    private String usersJsonKey;
+    private String usersStateKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +45,34 @@ public class MainActivity extends AppCompatActivity {
 
         userController = new UserController();
 
+        usersJsonKey = getString(R.string.users_json);
+        usersStateKey = getString(R.string.users_state);
+
         initView();
 
         LinearLayoutManager resultLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mainSearchUser.setLayoutManager(resultLayoutManager);
         mainSearchUser.setHasFixedSize(true);
+        mainSearchUser.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (recyclerView.getAdapter().getItemCount() != 0) {
+                    int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+                    if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1) {
+                        if (userAdapter.getUsers().size() % IConstant.QUERY_PER_PAGE == 0 && lastVisibleItemPosition != 0) {
+                            pageNumber++;
+                            userSearchQuery();
+                        }
+                    }
+                }
+            }
+        });
 
         userAdapter = new UserAdapter();
         mainSearchUser.setAdapter(userAdapter);
@@ -67,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void userSearchQuery() {
-        userQuery = "paul";
         userController.searchUser(userQuery, pageNumber);
     }
 
