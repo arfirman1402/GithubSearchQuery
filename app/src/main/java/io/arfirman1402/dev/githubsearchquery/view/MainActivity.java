@@ -10,6 +10,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private int totalCount;
+    private String usersJsonKey = getString(R.string.users_json);
+    private String usersStateKey = getString(R.string.users_state);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +53,21 @@ public class MainActivity extends AppCompatActivity {
         userAdapter = new UserAdapter();
         mainSearchUser.setAdapter(userAdapter);
 
+        if (savedInstanceState != null) {
+            String usersJson = savedInstanceState.getString(usersJsonKey);
+            User[] users = App.getInstance().getGson().fromJson(usersJson, User[].class);
+            List<User> userList = Arrays.asList(users);
+            userAdapter.setUsers(userList);
+
+            mainSearchUser.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(usersStateKey));
+            return;
+        }
+
         userSearchQuery();
     }
 
     private void userSearchQuery() {
-        userQuery = "arfirman";
+        userQuery = "paul";
         userController.searchUser(userQuery, pageNumber);
     }
 
@@ -84,5 +97,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
         ButterKnife.bind(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        String usersJson = App.getInstance().getGson().toJson(userAdapter.getUsers());
+        outState.putString(usersJsonKey, usersJson);
+        outState.putParcelable(usersStateKey, mainSearchUser.getLayoutManager().onSaveInstanceState());
     }
 }
