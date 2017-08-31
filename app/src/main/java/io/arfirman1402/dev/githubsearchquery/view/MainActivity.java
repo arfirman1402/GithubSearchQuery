@@ -4,7 +4,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.View;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -32,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     private int pageNumber = 1;
 
     private static final String TAG = "MainActivity";
-    private int totalCount;
     private String usersJsonKey;
     private String usersStateKey;
 
@@ -54,11 +56,6 @@ public class MainActivity extends AppCompatActivity {
         mainSearchUser.setLayoutManager(resultLayoutManager);
         mainSearchUser.setHasFixedSize(true);
         mainSearchUser.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -109,12 +106,10 @@ public class MainActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getSearchResult(UserEvent event) {
         if (event.isSuccess()) {
-            Log.d(TAG, "getSearchResult: Success");
-            totalCount = event.getResult().getTotalCount();
             List<User> items = event.getResult().getItems();
             userAdapter.setUsers(items);
         } else {
-            Log.e(TAG, "getSearchResult: Failed");
+            Log.e(TAG, "getSearchResult: " + event.getMessage());
         }
     }
 
@@ -128,5 +123,48 @@ public class MainActivity extends AppCompatActivity {
         String usersJson = App.getInstance().getGson().toJson(userAdapter.getUsers());
         outState.putString(usersJsonKey, usersJson);
         outState.putParcelable(usersStateKey, mainSearchUser.getLayoutManager().onSaveInstanceState());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        final SearchView mainActionSearch = (SearchView) menu.findItem(R.id.main_action_search).getActionView();
+        mainActionSearch.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainSearchUser.setVisibility(View.GONE);
+            }
+        });
+
+        mainActionSearch.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                mainSearchUser.setVisibility(View.VISIBLE);
+                return false;
+            }
+        });
+        mainActionSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchUser(query);
+                mainActionSearch.onActionViewCollapsed();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        return true;
+    }
+
+    private void searchUser(String query) {
+        setTitle(query);
+        mainSearchUser.setVisibility(View.VISIBLE);
+        userAdapter.resetUsers();
+        pageNumber = 1;
+        userQuery = query;
+        userSearchQuery();
     }
 }

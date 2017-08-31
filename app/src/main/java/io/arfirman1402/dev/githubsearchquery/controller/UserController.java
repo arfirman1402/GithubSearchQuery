@@ -29,7 +29,6 @@ public class UserController {
 
             @Override
             public void onResponse(@NonNull Call<Result<User>> call, @NonNull Response<Result<User>> response) {
-                Log.d(TAG, "onResponse: " + App.getInstance().getGson().toJson(response.body().getItems()));
                 if (response.code() == 200) {
                     userEvent = new UserEvent(true, response.message(), response.body());
                 } else {

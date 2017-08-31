@@ -3,6 +3,7 @@
     <string name="main_search_text">Your Result is Here</string>
     <string name="user_image_desc">Github User Account Image</string>
     <string name="user_name">Anonymous Account</string>
-`    <string name="users_json">users-json</string>
+    <string name="users_json">users-json</string>
     <string name="users_state">users-state</string>
+    <string name="main_action_search">Search User</string>
 </resources>

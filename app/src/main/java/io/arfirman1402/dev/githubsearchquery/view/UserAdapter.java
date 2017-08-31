@@ -59,6 +59,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ResultViewHold
         return users.size();
     }
 
+    public void resetUsers() {
+        this.users.clear();
+        notifyDataSetChanged();
+    }
+
     class ResultViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.user_image)
         ImageView userImage;
