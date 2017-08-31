@@ -1,6 +1,7 @@
 package io.arfirman1402.dev.githubsearchquery.view;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +9,7 @@ import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -28,10 +30,14 @@ import io.arfirman1402.dev.githubsearchquery.util.IConstant;
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.main_search_user)
     RecyclerView mainSearchUser;
+
+    @BindView(R.id.main_search_layout)
+    LinearLayout mainSearchLayout;
+
     private EventBus eventBus;
     private UserAdapter userAdapter;
     private UserController userController;
-    private String userQuery = "firman";
+    private String userQuery;
     private int pageNumber = 1;
 
     private static final String TAG = "MainActivity";
@@ -81,10 +87,7 @@ public class MainActivity extends AppCompatActivity {
             userAdapter.setUsers(userList);
 
             mainSearchUser.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(usersStateKey));
-            return;
         }
-
-        userSearchQuery();
     }
 
     private void userSearchQuery() {
@@ -110,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
             userAdapter.setUsers(items);
         } else {
             Log.e(TAG, "getSearchResult: " + event.getMessage());
+            Snackbar.make(mainSearchLayout, R.string.error_search_result, Snackbar.LENGTH_LONG).show();
         }
     }
 

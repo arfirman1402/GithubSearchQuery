@@ -6,4 +6,5 @@
     <string name="users_json">users-json</string>
     <string name="users_state">users-state</string>
     <string name="main_action_search">Search User</string>
+    <string name="error_search_result">We are sorry. Something wrong with connection. Please try again later.</string>
 </resources>
