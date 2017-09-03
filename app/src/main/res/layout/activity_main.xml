@@ -7,6 +7,40 @@
     android:orientation="vertical"
     tools:context="io.arfirman1402.dev.githubsearchquery.view.MainActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#45c5ff"
+        android:padding="@dimen/main_search_layout_padding">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:focusableInTouchMode="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/main_search_inner_layout_padding">
+
+            <ImageView
+                android:id="@+id/main_search_icon"
+                android:layout_width="@dimen/main_search_icon_width"
+                android:layout_height="@dimen/main_search_icon_height"
+                android:contentDescription="@string/main_search_icon_desc"
+                android:src="@mipmap/ic_search_gray" />
+
+            <EditText
+                android:id="@+id/main_search_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/main_search_edit_margin_start"
+                android:background="@android:color/white"
+                android:hint="@string/main_search_edit_hint"
+                android:inputType="text"
+                android:maxLines="1" />
+        </LinearLayout>
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/main_search_user"
         android:layout_width="match_parent"

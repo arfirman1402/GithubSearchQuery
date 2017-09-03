@@ -8,4 +8,9 @@
     <dimen name="user_name_margin_start">8dp</dimen>
     <dimen name="user_name_text_size">18sp</dimen>
     <dimen name="main_search_user_padding">8dp</dimen>
+    <dimen name="main_search_layout_padding">8dp</dimen>
+    <dimen name="main_search_inner_layout_padding">8dp</dimen>
+    <dimen name="main_search_icon_width">48dp</dimen>
+    <dimen name="main_search_icon_height">48dp</dimen>
+    <dimen name="main_search_edit_margin_start">16dp</dimen>
 </resources>

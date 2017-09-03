@@ -1,14 +1,18 @@
 package io.arfirman1402.dev.githubsearchquery.view;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import org.greenrobot.eventbus.EventBus;
@@ -27,12 +31,18 @@ import io.arfirman1402.dev.githubsearchquery.event.UserEvent;
 import io.arfirman1402.dev.githubsearchquery.model.User;
 import io.arfirman1402.dev.githubsearchquery.util.IConstant;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     @BindView(R.id.main_search_user)
     RecyclerView mainSearchUser;
 
     @BindView(R.id.main_search_layout)
     LinearLayout mainSearchLayout;
+
+    @BindView(R.id.main_search_icon)
+    ImageView mainSearchIcon;
+
+    @BindView(R.id.main_search_edit)
+    EditText mainSearchEdit;
 
     private EventBus eventBus;
     private UserAdapter userAdapter;
@@ -79,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
 
         userAdapter = new UserAdapter();
         mainSearchUser.setAdapter(userAdapter);
+
+        mainSearchIcon.setOnClickListener(this);
 
         if (savedInstanceState != null) {
             String usersJson = savedInstanceState.getString(usersJsonKey);
@@ -132,34 +144,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        final SearchView mainActionSearch = (SearchView) menu.findItem(R.id.main_action_search).getActionView();
-        mainActionSearch.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mainSearchUser.setVisibility(View.GONE);
-            }
-        });
-
-        mainActionSearch.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                mainSearchUser.setVisibility(View.VISIBLE);
-                return false;
-            }
-        });
-        mainActionSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                searchUser(query);
-                mainActionSearch.onActionViewCollapsed();
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
         return true;
     }
 
@@ -170,5 +154,23 @@ public class MainActivity extends AppCompatActivity {
         pageNumber = 1;
         userQuery = query;
         userSearchQuery();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.main_search_icon:
+                mainSearchEdit.clearFocus();
+                hideSoftKeyboard(this, v);
+                searchUser(mainSearchEdit.getText().toString());
+                break;
+            default:
+                break;
+        }
+    }
+
+    public static void hideSoftKeyboard(Activity activity, View view) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
     }
 }
