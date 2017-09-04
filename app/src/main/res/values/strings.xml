@@ -9,4 +9,5 @@
     <string name="error_search_result">We are sorry. Something wrong with connection. Please try again later.</string>
     <string name="main_search_icon_desc">Main Search Icon</string>
     <string name="main_search_edit_hint">Search Github Users</string>
+    <string name="user_search">Search</string>
 </resources>

@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -90,6 +91,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         userAdapter = new UserAdapter();
         mainSearchUser.setAdapter(userAdapter);
 
+        mainSearchEdit.setImeActionLabel(getString(R.string.user_search), KeyEvent.KEYCODE_ENTER);
+        mainSearchEdit.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    searchUserClick(v);
+                    return true;
+                }
+                return false;
+            }
+        });
         mainSearchIcon.setOnClickListener(this);
 
         if (savedInstanceState != null) {
@@ -160,13 +171,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.main_search_icon:
-                mainSearchEdit.clearFocus();
-                hideSoftKeyboard(this, v);
-                searchUser(mainSearchEdit.getText().toString());
+                searchUserClick(v);
                 break;
             default:
                 break;
         }
+    }
+
+    private void searchUserClick(View v) {
+        mainSearchEdit.clearFocus();
+        hideSoftKeyboard(this, v);
+        searchUser(mainSearchEdit.getText().toString());
     }
 
     public static void hideSoftKeyboard(Activity activity, View view) {
