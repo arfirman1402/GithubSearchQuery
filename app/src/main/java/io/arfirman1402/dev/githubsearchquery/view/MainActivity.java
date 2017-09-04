@@ -139,7 +139,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainSearchUser.setVisibility(View.VISIBLE);
         if (event.isSuccess()) {
             List<User> items = event.getResult().getItems();
-            userAdapter.setUsers(items);
+            if (items.size() > 0) userAdapter.setUsers(items);
+            else
+                Snackbar.make(mainSearchLayout, R.string.empty_search_result, Snackbar.LENGTH_LONG).show();
         } else {
             Log.e(TAG, "getSearchResult: " + event.getMessage());
             Snackbar.make(mainSearchLayout, R.string.error_search_result, Snackbar.LENGTH_LONG).show();
