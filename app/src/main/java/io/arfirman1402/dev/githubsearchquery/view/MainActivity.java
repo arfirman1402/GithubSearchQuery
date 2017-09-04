@@ -45,6 +45,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.main_search_edit)
     EditText mainSearchEdit;
 
+    @BindView(R.id.loading_layout)
+    LinearLayout loadingLayout;
+
     private EventBus eventBus;
     private UserAdapter userAdapter;
     private UserController userController;
@@ -102,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         mainSearchIcon.setOnClickListener(this);
+        loadingLayout.setVisibility(View.GONE);
 
         if (savedInstanceState != null) {
             String usersJson = savedInstanceState.getString(usersJsonKey);
@@ -131,6 +135,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getSearchResult(UserEvent event) {
+        loadingLayout.setVisibility(View.GONE);
+        mainSearchUser.setVisibility(View.VISIBLE);
         if (event.isSuccess()) {
             List<User> items = event.getResult().getItems();
             userAdapter.setUsers(items);
@@ -160,7 +166,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void searchUser(String query) {
         setTitle(query);
-        mainSearchUser.setVisibility(View.VISIBLE);
         userAdapter.resetUsers();
         pageNumber = 1;
         userQuery = query;
@@ -181,6 +186,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void searchUserClick(View v) {
         mainSearchEdit.clearFocus();
         hideSoftKeyboard(this, v);
+        mainSearchUser.setVisibility(View.GONE);
+        loadingLayout.setVisibility(View.VISIBLE);
         searchUser(mainSearchEdit.getText().toString());
     }
 

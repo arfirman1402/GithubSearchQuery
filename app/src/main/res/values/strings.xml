@@ -10,4 +10,5 @@
     <string name="main_search_icon_desc">Main Search Icon</string>
     <string name="main_search_edit_hint">Search Github Users</string>
     <string name="user_search">Search</string>
+    <string name="loading_layout_text">Please Wait &#8230;</string>
 </resources>
