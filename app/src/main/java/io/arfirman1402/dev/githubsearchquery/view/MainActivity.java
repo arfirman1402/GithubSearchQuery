@@ -186,11 +186,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void searchUserClick(View v) {
-        mainSearchEdit.clearFocus();
         hideSoftKeyboard(this, v);
-        mainSearchUser.setVisibility(View.GONE);
-        loadingLayout.setVisibility(View.VISIBLE);
-        searchUser(mainSearchEdit.getText().toString());
+        if (!mainSearchEdit.getText().toString().equals(userQuery)) {
+            mainSearchEdit.clearFocus();
+            mainSearchUser.setVisibility(View.GONE);
+            loadingLayout.setVisibility(View.VISIBLE);
+            searchUser(mainSearchEdit.getText().toString());
+        }
     }
 
     public static void hideSoftKeyboard(Activity activity, View view) {
